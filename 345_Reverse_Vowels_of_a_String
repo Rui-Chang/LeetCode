@@ -1,0 +1,37 @@
+
+char* reverseVowels(char* s) {
+    int i = 0;
+    int j = strlen(s) - 1;
+    char tmp;
+    
+    while(i < j){
+        while(i < j && !strchr("aeiouAEIOU", s[i]))
+            i++;
+        while(i < j && !strchr("aeiouAEIOU", s[j]))
+            j--;
+        tmp = s[i];
+        s[i++] = s[j];
+        s[j--] = tmp;
+    }
+    
+    return s;
+}
+
+
+class Solution {
+public:
+    string reverseVowels(string s) {
+        auto front = s.begin(), rear = s.end() - 1;        
+        string Vowels = "aeiouAEIOU";
+        
+        while(front < rear){
+            while(front < rear && Vowels.find(*front) == string::npos)
+                front++;
+            while(front < rear && Vowels.find(*rear) == string::npos)
+                rear--;
+            swap(*front++, *rear--);
+        }
+        
+        return s;
+    }
+};
