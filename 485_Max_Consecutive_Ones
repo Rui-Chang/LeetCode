@@ -1,0 +1,35 @@
+int findMaxConsecutiveOnes(int* nums, int numsSize) {
+    
+    int MaxOnes = 0;
+    //Sum of each consecutive ones
+    int partOnes = 0;
+    
+    for(int i = 0; i < numsSize; i++){
+        if(nums[i]){
+            MaxOnes = (MaxOnes < ++partOnes)? partOnes: MaxOnes;
+        }
+        else{
+            partOnes = 0;
+        }
+    }
+    
+    return MaxOnes;
+}
+
+class Solution {
+public:
+    int findMaxConsecutiveOnes(vector<int>& nums) {
+        int MaxOnes = 0;
+        int partOnes = 0;
+        
+        for(vector< int >::iterator I = nums.begin(), E = nums.end();
+            I != E; I++){
+                if(*I)
+                    MaxOnes = (MaxOnes >= ++partOnes)? MaxOnes: partOnes;
+                else
+                    partOnes = 0;
+            }
+            
+        return MaxOnes;
+    }
+};
