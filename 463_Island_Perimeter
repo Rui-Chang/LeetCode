@@ -1,0 +1,51 @@
+/// If using judge 4 directions and add side, we need compare 4 times
+/// on a land to process the marginal lands.
+/// Otherwise, if add all 4 sides in advance then subtract the shared
+/// sides, only upper and left directions compared, halving the work.
+
+int islandPerimeter(int** grid, int gridRowSize, int gridColSize) {
+    int perimeter = 0;
+    
+    for(int i = 0; i < gridRowSize; i++)
+        for(int j = 0; j < gridColSize; j ++){
+            //land
+            if(grid[i][j]){
+                //Add all 4 sides into perimeter sum.
+                perimeter += 4;
+                //If there is adjoint land on the top or left
+                //then subtract both the shared sides from the
+                //perimeter sum.
+                if(i && grid[i-1][j])
+                    perimeter -= 2;
+                if(j && grid[i][j-1])
+                    perimeter -= 2;
+            }
+        }
+        
+    return perimeter;
+}
+
+class Solution {
+public:
+    int islandPerimeter(vector<vector<int>>& grid) {
+        int perimeter = 0;
+        
+        for(int i = 0; i < grid.size(); i++)
+            for(int j = 0; j < grid[i].size; j ++){
+                //land
+                if(grid[i][j]){
+                    //Add all 4 sides into perimeter sum.
+                    perimeter += 4;
+                    //If there is adjoint land on the top or left
+                    //then subtract both the shared sides from the
+                    //perimeter sum.
+                    if(i && grid[i-1][j])
+                        perimeter -= 2;
+                    if(j && grid[i][j-1])
+                        perimeter -= 2;
+                }
+            }
+            
+        return perimeter;
+    }
+};
