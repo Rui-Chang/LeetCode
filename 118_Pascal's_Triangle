@@ -1,0 +1,33 @@
+/**
+ * Return an array of arrays.
+ * The sizes of the arrays are returned as *columnSizes array.
+ * Note: Both returned array and *columnSizes array must be malloced, assume caller calls free().
+ */
+int** generate(int numRows, int** columnSizes) {
+    
+    if(numRows < 1){
+        *columnSizes = NULL;
+        return NULL;
+    }
+    
+    //Record the address of each row
+    int **triangle = (int **)malloc(numRows * sizeof(int *));
+    //The array recording the columns of each row
+    *columnSizes = (int *)malloc(numRows * sizeof(int));
+    //Point to the space allocated for a row
+    int *row;
+    
+    for(int i = 0; i < numRows; i++){
+        (*columnSizes)[i] = i+1;
+        row = (int *)malloc((i+1) * sizeof(int));
+        //Both ends for each row are 1
+        row[0] = row[i] = 1;
+        //Compute the elements in the midst of a row
+        for(int j = i-1; j > 0; j--)
+            row[j] = triangle[i-1][j] + triangle[i-1][j-1];
+        triangle[i] = row;
+    }
+    
+    return triangle;
+}
+
