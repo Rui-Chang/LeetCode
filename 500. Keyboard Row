@@ -1,0 +1,96 @@
+class Solution {
+public:
+    vector<string> findWords(vector<string>& words) {
+        vector<string> output;
+        bool isOneRow;
+
+        for(const auto &str : words){
+            bool isOneRow = true;
+            
+            for(const auto &ch : str){
+                if(rowOfKey(ch) == 0 || rowOfKey(ch) != rowOfKey(str[0])){
+                    isOneRow = false;
+                    break;
+                }
+            }
+            
+            if(isOneRow)
+                output.push_back(str);
+        }
+        
+        return output;
+    }
+    
+private:
+    static const vector<int> rowTbl;
+
+    static int rowOfKey(const int ch){
+        int key = toupper(ch) - 'A';
+        
+        if(0 <= key && key <= 25)
+            return rowTbl[key];
+        else
+            return 0;
+    }
+};
+
+const vector<int> Solution::rowTbl = {
+        //A-M
+        2, 3, 3, 2, 1, 2, 2, 2, 1, 2, 2, 2, 3,
+        //N-Z
+        3, 1, 1, 1, 1, 2, 1, 1, 3, 1, 3, 1, 3
+    };
+    
+    
+    /**
+ * Return an array of size *returnSize.
+ * Note: The returned array must be malloced, assume caller calls free().
+ */
+ 
+static const int rowTbl[26] = {
+    //A-M
+    2, 3, 3, 2, 1, 2, 2, 2, 1, 2, 2, 2, 3,
+    //N-Z
+    3, 1, 1, 1, 1, 2, 1, 1, 3, 1, 3, 1, 3
+};
+ 
+inline int rowNumOfKey(char ch){
+    int key = toupper(ch) - 'A';
+    
+    if(key < 0 || key > 25)
+        return 0;
+    else
+        return (rowTbl[key]);
+}
+
+char** findWords(char** words, int wordsSize, int* returnSize) {
+    int rowNum, inOneRow;
+    char *str;
+    int ch, chidx;
+    char **returnList = malloc(wordsSize * sizeof(char *));
+    
+    *returnSize = 0;
+    for(int i = 0; i <wordsSize; i++){
+        //get a string
+        str = words[i];
+        
+        //check each character
+        chidx = 0;
+        inOneRow = 1;
+        rowNum = rowNumOfKey(str[0]);
+        while(ch = str[chidx++]){
+            if(rowNumOfKey(ch) != rowNum || !rowNumOfKey(ch)){
+                inOneRow = 0;
+                break;
+            }
+        }
+        
+        //Update output list
+        if(inOneRow){
+            returnList[*returnSize] = str;
+            ++*returnSize;
+        }
+    }
+    
+    return returnList;
+}
