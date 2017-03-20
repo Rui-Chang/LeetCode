@@ -1,0 +1,26 @@
+class Solution {
+public:
+    vector<int> nextGreaterElement(vector<int>& findNums, vector<int>& nums) {
+        std::stack<int> stack;
+        std::unordered_map<int, int> hashMap;
+        vector<int> outlist;
+        
+        for(const auto& n: nums){
+            //stack store the element waiting for finding its 
+            //next greater number.
+             while(!stack.empty() && stack.top() < n){
+                //queue store a sequence whose front element
+                //is the biggest one.
+                hashMap[stack.top()] = n;
+                stack.pop();
+            }
+            stack.push(n);
+        }
+        
+        for(const auto &n : findNums){
+            outlist.push_back(hashMap.count(n)? hashMap[n]: -1);
+        }
+        
+        return outlist;
+    }
+};
