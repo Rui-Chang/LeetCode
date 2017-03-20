@@ -1,0 +1,72 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        preOrderFindBottom(root, 1);
+        
+        if(bottomleftNode)
+            return bottomleftNode->val;
+        else
+            return 0;
+    }
+    
+    //Search the deepest and leftmost node
+    void preOrderFindBottom(TreeNode *root, int level){
+        if(root){
+            if(level > maxDepth){
+                maxDepth = level;
+                bottomleftNode = root;
+            }
+            preOrderFindBottom(root->left, level+1);
+            preOrderFindBottom(root->right, level+1);
+        }
+        
+        return;
+    }
+    
+private:
+    int maxDepth = 0;
+    TreeNode *bottomleftNode = nullptr;
+};
+
+==========================================
+class Solution {
+public:
+    int findBottomLeftValue(TreeNode* root) {
+        TreeNode *node = rightBFSTraverse(root);
+        
+        if(node)
+            return node->val;
+        else
+            return 0;
+    }
+    
+    TreeNode *rightBFSTraverse(TreeNode *root){
+        if(root == nullptr)
+            return nullptr;
+        
+        TreeNode *lastNode = nullptr;
+        std::queue<TreeNode *> nodeQueue;
+        
+        nodeQueue.push(root);
+        while(!nodeQueue.empty()){
+            lastNode = nodeQueue.front();
+            nodeQueue.pop();
+            
+            if(lastNode->right)
+                nodeQueue.push(lastNode->right);
+            if(lastNode->left)
+                nodeQueue.push(lastNode->left);
+        }
+        
+        return lastNode;
+    }
+};
