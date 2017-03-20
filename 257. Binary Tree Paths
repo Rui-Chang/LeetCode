@@ -1,0 +1,52 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+ 
+ //#include <sstream>
+ 
+class Solution {
+public:
+    vector<string> binaryTreePaths(TreeNode* root) {
+        vector<string> outlist;
+        
+        if(root)
+            dfsAddPath(root, outlist);
+            
+        return outlist;
+    }
+    
+    void dfsAddPath(TreeNode *root, vector<string> &outlist){
+        //stringstream ss;
+        string oldPath = path;
+        
+        // ss << root->val;
+        // path += ss.str();
+        path += to_string(root->val);
+        
+        //Add path when root is leaf node
+        if(!(root->left) && !(root->right))
+            outlist.push_back(path);
+        //Search leaf node in left or right subtree
+        else{
+            path += "->";
+            if(root->left)
+                dfsAddPath(root->left, outlist);
+            if(root->right)
+                dfsAddPath(root->right, outlist);
+        }
+        
+        //Return back to its parent and remove it from path
+        path = oldPath;
+        return;    
+    }
+    
+private:
+
+    string path;
+};
