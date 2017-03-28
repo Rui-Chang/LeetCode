@@ -1,0 +1,23 @@
+class Solution {
+public:
+    bool detectCapitalUse(string word) {
+        if(word.empty())
+            return true;
+        if(word.size() == 1)
+            {return isalpha(word[0]);}
+        //size >= 2
+        if(isalpha(word[0]) && isalpha(word[1])){
+            int secondCase = isupper(word[1]);
+            //Pattern like aA... must be false
+            if(secondCase && !isupper(word[0]))
+                return false;
+            //The case from second character to the end must be consistent.
+            for(int i = 2; i < word.size(); i++)
+                if(isupper(word[i]) != secondCase || !isalpha(word[i]))
+                    return false;
+                    
+            return true;
+        }
+        return false;
+    }
+};
