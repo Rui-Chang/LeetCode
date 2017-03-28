@@ -1,0 +1,22 @@
+class Solution {
+public:
+    vector<int> findDisappearedNumbers(vector<int>& nums) {
+        vector<int> disappear;
+        int idx;
+        
+        //Elements range from 1 to n, could be used as index.
+        //When it appeared, negate element indicated by it. 
+        for(auto &n: nums){
+            idx = abs(n) - 1;
+            if(nums[idx] > 0)
+                nums[idx] = -nums[idx];
+        }
+        
+        //Elements are positive when their index number disappeared
+        for(int i = 0; i < nums.size(); ++i)
+            if(nums[i] > 0)
+                disappear.push_back(i+1);
+                
+        return disappear;
+    }
+};
