@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        stack<int> suspend;
+        vector<int> nextGreat(nums.size(), -1);
+        
+        for(int i = 0; i < nums.size(); ++i){
+            while(!suspend.empty() && nums[suspend.top()] < nums[i]){
+                nextGreat[suspend.top()] = nums[i];
+                suspend.pop();
+            }
+            
+            suspend.push(i);
+        }
+        
+        for(int i = 0; i < nums.size(); ++i){
+            while(!suspend.empty() && nums[suspend.top()] < nums[i]){
+                nextGreat[suspend.top()] = nums[i];
+                suspend.pop();
+            }
+        }
+        
+        return nextGreat;
+    }
+};
