@@ -1,0 +1,71 @@
+Total Accepted: 98636
+Total Submissions: 306330
+Difficulty: Easy
+Contributor: LeetCode
+Given a singly linked list, determine if it is a palindrome.
+
+Follow up:
+Could you do it in O(n) time and O(1) space?
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Linked List Two Pointers
+Hide Similar Problems (E) Palindrome Number (E) Valid Palindrome (E) Reverse Linked List
+
+*******************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if(!head || head->next == nullptr)
+            return true;
+        
+        ListNode *midNode = head;
+        ListNode *endNode = head;
+        while(endNode->next && endNode->next->next){
+            midNode = midNode->next;
+            endNode = endNode->next->next;
+        }
+        //1->2->3->4->5 => 1->2->3->null, 5->4->null
+        ListNode *revHead = reverseLinkList(midNode->next);    
+        midNode->next = nullptr;
+        
+        return compareLinkList(head, revHead);
+    }
+    
+private:
+    ListNode *reverseLinkList(ListNode *head)
+    {
+        ListNode *pre = nullptr;
+        ListNode *nNode;
+        while(head){
+            nNode = head->next;
+            head->next = pre;
+            pre = head;
+            head = nNode;
+        }
+        
+        return pre;
+    }
+    
+    bool compareLinkList(const ListNode *p1, const ListNode *p2)
+    {
+        while(p2){
+            if(p1->val != p2->val)
+                return false;
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        
+        return true;
+    }
+    
+};
