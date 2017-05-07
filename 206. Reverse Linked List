@@ -1,0 +1,47 @@
+Total Accepted: 216215
+Total Submissions: 483873
+Difficulty: Easy
+Contributor: LeetCode
+Reverse a singly linked list.
+
+click to show more hints.
+
+Hint:
+A linked list can be reversed either iteratively or recursively. Could you implement both?
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Linked List
+Hide Similar Problems (M) Reverse Linked List II (M) Binary Tree Upside Down (E) Palindrome Linked List
+
+**************************************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        // if(head == nullptr || head->next == nullptr)
+        //     return head;
+        
+        ListNode hnode(0);
+        ListNode *newHead = &hnode;
+        ListNode *cur = head;
+        ListNode *nextNode;
+        
+        while(cur){
+            nextNode = cur->next;
+            cur->next = newHead->next;
+            newHead->next = cur;
+            cur = nextNode;
+        }
+        
+        return newHead->next;
+    }
+};
