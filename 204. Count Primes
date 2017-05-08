@@ -1,0 +1,52 @@
+Total Accepted: 109677
+Total Submissions: 415743
+Difficulty: Easy
+Contributor: LeetCode
+Description:
+
+Count the number of prime numbers less than a non-negative number, n.
+
+Credits:
+Special thanks to @mithmatt for adding this problem and creating all test cases.
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Hash Table Math
+Hide Similar Problems (E) Ugly Number (M) Ugly Number II (M) Perfect Squares
+
+******************************************
+
+class Solution {
+public:
+    int countPrimes(int n) {
+        if(n <= 2)
+            return 0;
+        
+        vector<bool> isPrime(n, true);
+        isPrime[0] = isPrime[1] = false;
+        int sqrtN = sqrt(n);
+        int sum = 1;
+        
+        for(int i = 3; i <= sqrtN; i += 2){
+            if(isPrime[i]){
+                ++sum;
+                
+                //Marking the composite numbers which have
+                //the prime factor i
+                //eg. i     2*i ... i*i     (i+1)i  ...  n-1
+                //    p      c       c        c
+                //But j =  2i .. (i-1)i have been processed when
+                //i' = 2, 3, ... prime less than i.
+                for(int j = i * i; j < n; j += 2*i)
+                    isPrime[j] = false;
+            }
+        }
+        
+        int k = (sqrtN & 0x1)? (sqrtN + 2): (sqrtN + 1);
+        for( ; k < n; k += 2)
+            sum += (isPrime[k]);
+            
+        return sum;
+        
+    }
+};
