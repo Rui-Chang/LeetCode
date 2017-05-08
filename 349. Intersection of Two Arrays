@@ -1,0 +1,40 @@
+Total Accepted: 84323
+Total Submissions: 180527
+Difficulty: Easy
+Contributor: LeetCode
+Given two arrays, write a function to compute their intersection.
+
+Example:
+Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2].
+
+Note:
+Each element in the result must be unique.
+The result can be in any order.
+Subscribe to see which companies asked this question.
+
+Hide Tags Binary Search Hash Table Two Pointers Sort
+Hide Similar Problems (E) Intersection of Two Arrays II
+
+*****************************************************
+
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int> sec1(nums1.cbegin(), nums1.cend());
+        // set<int> retSec;
+        vector<int> res;
+        
+        for(const auto &n: nums2){
+            // if(sec1.find(n) != sec1.cend())
+                // retSec.insert(n);
+                
+            //return the number of key removed.
+            if(sec1.erase(n))
+                res.push_back(n);
+        }
+        
+        // vector<int> res(retSec.cbegin(), retSec.cend());
+        
+        return res;
+    }
+};
