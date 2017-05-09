@@ -1,0 +1,47 @@
+Total Accepted: 150694
+Total Submissions: 329319
+Difficulty: Easy
+Contributor: LeetCode
+Given two strings s and t, write a function to determine if t is an anagram of s.
+
+For example,
+s = "anagram", t = "nagaram", return true.
+s = "rat", t = "car", return false.
+
+Note:
+You may assume the string contains only lowercase alphabets.
+
+Follow up:
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Hash Table Sort
+Hide Similar Problems (M) Group Anagrams (E) Palindrome Permutation (E) Find All Anagrams in a String
+
+*******************************************
+
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        int len = s.size();
+        
+        if(len != t.size())
+            return false;
+        
+        vector<int> balance(26, 0);
+        
+        
+        for(int i = 0; i < len; i++){
+            ++balance[s[i] - 'a'];
+            --balance[t[i] - 'a'];
+        }
+        
+        for(const auto &n: balance){
+            if(n != 0)
+                return false;
+        }
+        
+        return true;
+    }
+};
