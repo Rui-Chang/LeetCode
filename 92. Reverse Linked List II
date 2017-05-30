@@ -1,0 +1,80 @@
+Total Accepted: 106700
+Total Submissions: 352153
+Difficulty: Medium
+Contributor: LeetCode
+Reverse a linked list from position m to n. Do it in-place and in one-pass.
+
+For example:
+Given 1->2->3->4->5->NULL, m = 2 and n = 4,
+
+return 1->4->3->2->5->NULL.
+
+Note:
+Given m, n satisfy the following condition:
+1 ≤ m ≤ n ≤ length of list.
+
+Subscribe to see which companies asked this question.
+
+Show Tags
+Hide Similar Problems (E) Reverse Linked List
+
+***********
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseBetween(ListNode* head, int m, int n) {
+        //No matter index start from 0 or 1
+        if(m == 0 && m <= n && n <= 4){
+            ++m; ++n;
+        }
+        if(head == nullptr || m < 1 || m >= n)
+            return head;
+        
+        //Insert head node
+        unique_ptr<ListNode> headNode(new ListNode(0));
+        headNode->next = head;
+        
+        //Find the node previous to node m
+        ListNode *pre = headNode.get();
+        for(int i = 0; pre && i < m-1; i++)
+            pre = pre->next;
+        if(pre == nullptr || pre->next == nullptr)
+            return head;
+        ListNode *node_m = pre->next;
+        
+        //Locate the node after node n
+        ListNode *node_n = node_m;
+        for(int i = m; node_n && i < n; i++)
+            node_n = node_n->next;
+        if(!node_n)
+            return head;
+        ListNode *rear = node_n->next;
+        node_n->next = nullptr;
+        
+        pre->next = reverseList(node_m);
+        node_m->next = rear;
+        
+        return headNode->next;
+    }
+    
+private:
+    ListNode *reverseList(ListNode *head)
+    {
+        ListNode *pre = nullptr, *nextNode;
+        while(head){
+            nextNode = head->next;
+            head->next = pre;
+            pre = head;
+            head = nextNode;
+        }
+        return pre;
+    }
+};
