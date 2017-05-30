@@ -1,0 +1,93 @@
+Find the largest palindrome made from the product of two n-digit numbers.
+
+Since the result could be very large, you should return the largest palindrome mod 1337.
+
+Example:
+
+Input: 2
+
+Output: 987
+
+Explanation: 99 x 91 = 9009, 9009 % 1337 = 987
+
+Note:
+
+The range of n is [1,8].
+
+Subscribe to see which companies asked this question.
+
+**********
+
+class Solution {
+public:
+    int largestPalindrome(int n) {
+        if(n == 1)
+            return 9;
+        
+        long long low, hi;
+        long long product, frontHalf;
+        //eg. When n = 2, hi = 99 * 99 = 9801,
+        //low = (10 * 10) * 10 = 100 * 10 = 1000, for keeping even digits.
+        //frontHalf = 9801 / 10^2 = 98.
+        //build product = 9889 > hi, again, build product = 9779.
+        //Assume that we can find solution before product was reduced to
+        //odd digits such as 31 * 31 = 961, where frontHalf = 9 will lose
+        //a middle digit '6'.
+        //hi and low are max and min product of both n-digit numbers
+        hi = pow(10, n);
+        low = hi / 10;
+        hi = (hi - 1)*(hi - 1);
+        //front half part of palindrome
+        frontHalf = hi / (long long)pow(10, n); 
+        //lowest even digits product
+        low = low * low * 10;
+        //Make sure palindrome <= hi
+        while((product = buildPalindrome(frontHalf)) > hi)
+            --frontHalf;
+        
+        while(product > low){
+            //Check if this palindrome can be factorized by
+            //two n-digit numbers.
+            if(factorization(product, n))
+                return (product % 1337);
+            product = buildPalindrome(--frontHalf);
+        }
+        
+        return 0;
+    }
+    
+private:
+    long long buildPalindrome(long long half)
+    {   
+        //10 -> 1001
+        long long rev = 0, x = half;
+        int digitNums = 0;
+        
+        while(x > 0){
+            rev = rev * 10 + x % 10;
+            ++digitNums;
+            x /= 10;
+        }
+        return  half * (long long)pow(10, digitNums) + rev;
+    }
+    
+    //If n could be factorized to two digitNums-digit number
+    //return true.
+    bool factorization(long long n, int digitNums)
+    {
+        long long x = sqrt(n);
+        long long y = x;
+        long long bottom = pow(10, digitNums-1);
+        long long top = 10 * bottom - 1;
+        
+        while(x >= bottom && y <= top){
+            if(x * y == n)
+                return true;
+            else if(x * y > n)
+                --x;
+            else
+                ++y;
+        }
+        return false;
+    }
+};
