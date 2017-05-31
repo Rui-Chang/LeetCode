@@ -1,0 +1,35 @@
+Total Accepted: 193621
+Total Submissions: 505492
+Difficulty: Easy
+Contributor: LeetCode
+Given an array and a value, remove all instances of that value in place and return the new length.
+
+Do not allocate extra space for another array, you must do this in place with constant memory.
+
+The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+
+Example:
+Given input array nums = [3,2,2,3], val = 3
+
+Your function should return length = 2, with the first two elements of nums being 2.
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Array Two Pointers
+Hide Similar Problems (E) Remove Duplicates from Sorted Array (E) Remove Linked List Elements (E) Move Zeroes
+
+********************
+
+class Solution {
+public:
+    int removeElement(vector<int>& nums, int val) {
+        if(nums.empty()) {return 0;}
+        
+        int newpos, cur;
+        for(newpos = 0, cur = 0; cur < nums.size(); ++cur){
+            if(nums[cur] != val)
+                nums[newpos++] = nums[cur];
+        }
+        return newpos;
+    }
+};
