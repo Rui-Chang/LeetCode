@@ -1,0 +1,53 @@
+Total Accepted: 105955
+Total Submissions: 436253
+Difficulty: Medium
+Contributor: LeetCode
+Given a list, rotate the list to the right by k places, where k is non-negative.
+
+For example:
+Given 1->2->3->4->5->NULL and k = 2,
+return 4->5->1->2->3->NULL.
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Linked List Two Pointers
+Hide Similar Problems (E) Rotate Array
+
+******************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if(k == 0 || head == nullptr) return head;
+        
+        ListNode *slow, *fast;
+        int i;
+        slow = fast = head;
+        //fast step forward k steps
+        for(i = 0; fast != nullptr && i < k; ++i)
+            fast = fast->next;
+        //The size of list is no greater than k
+        if(fast == nullptr){
+            return rotateRight(head, k % i);
+        }
+        //Move fast point to last node and slow to last (k+1)th node
+        while(fast->next != nullptr){
+            slow = slow->next;
+            fast = fast->next;
+        }
+        //Put the last k nodes to the head
+        fast->next = head;
+        head = slow->next;
+        slow->next = nullptr;
+        
+        return head;
+    }
+};
