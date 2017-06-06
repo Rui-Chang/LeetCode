@@ -1,0 +1,53 @@
+Total Accepted: 154757
+Total Submissions: 984882
+Difficulty: Medium
+Contributor: LeetCode
+Given an input string, reverse the string word by word.
+
+For example,
+Given s = "the sky is blue",
+return "blue is sky the".
+
+Update (2015-02-12):
+For C programmers: Try to solve it in-place in O(1) space.
+
+click to show clarification.
+
+Subscribe to see which companies asked this question.
+
+Hide Tags String
+Hide Similar Problems (M) Reverse Words in a String II
+
+************************
+
+class Solution {
+public:
+    void reverseWords(string &s) {
+        if(s.empty()) return;
+
+        int stI = 0, wstart;
+        for(unsigned i = 0; i < s.size(); ++i){
+            if(!isspace(s[i])){
+                //In case of cover first character when no leading space
+                if(stI != 0) s[stI++] = ' ';
+                wstart = stI;
+                while(i < s.size() && !isspace(s[i]))
+                    s[stI++] = s[i++];
+                reverse(s, wstart, stI-1);
+            }
+        }
+        reverse(s, 0, stI-1);
+        s.resize(stI);
+    }
+
+
+private:
+    void reverse(string &s, int beg, int end)
+    {
+        // if(s.empty()) return;
+        // if(beg < 0 || end + 1 > (int)s.size()) return;
+        while(beg < end){
+            swap(s[beg++], s[end--]);
+        }
+    }
+};
