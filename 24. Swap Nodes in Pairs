@@ -1,0 +1,44 @@
+Total Accepted: 160983
+Total Submissions: 424086
+Difficulty: Medium
+Contributor: LeetCode
+Given a linked list, swap every two adjacent nodes and return its head.
+
+For example,
+Given 1->2->3->4, you should return the list as 2->1->4->3.
+
+Your algorithm should use only constant space. You may not modify the values in the list, only nodes itself can be changed.
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Linked List
+Hide Similar Problems (H) Reverse Nodes in k-Group
+
+****************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* swapPairs(ListNode* head) {
+        ListNode prehead(0);
+        prehead.next = head;
+        ListNode *pre, *slow, *fast;
+        pre = slow = fast = &prehead;
+        while(fast->next && fast->next->next){
+            slow = fast->next;
+            fast = fast->next->next;
+            slow->next = fast->next;
+            fast->next = slow;
+            pre->next = fast;
+            pre = fast = slow;
+        }
+        return prehead.next;
+    }
+};
