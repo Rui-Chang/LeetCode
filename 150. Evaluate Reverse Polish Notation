@@ -1,0 +1,52 @@
+Total Accepted: 91544
+Total Submissions: 342041
+Difficulty: Medium
+Contributor: LeetCode
+Evaluate the value of an arithmetic expression in Reverse Polish Notation.
+
+Valid operators are +, -, *, /. Each operand may be an integer or another expression.
+
+Some examples:
+  ["2", "1", "+", "3", "*"] -> ((2 + 1) * 3) -> 9
+  ["4", "13", "5", "/", "+"] -> (4 + (13 / 5)) -> 6
+Subscribe to see which companies asked this question.
+
+Hide Tags Stack
+Hide Similar Problems (H) Basic Calculator (H) Expression Add Operators
+
+******************************
+
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        int result, left, right;
+        char op;
+        stack<int> sd;
+        for(const auto& str: tokens){
+            if(!str.empty()){
+                try{
+                    if(str.size() == 1 && !isdigit(str[0])){
+                        right = sd.top(); sd.pop();
+                        left = sd.top(); sd.pop();
+                        switch((op = str[0])){
+                            case '+': result = left + right; break;
+                            case '-': result = left - right; break;
+                            case '*': result = left * right; break;
+                            case '/': result = left / right; break;
+                            default: throw runtime_error("invalid operator");
+                        }
+                        sd.push(result);
+                    }
+                    else{
+                        sd.push(stoi(str)); //throw exception if str is no lead by digit(s).
+                    }
+                }
+                catch(runtime_error){
+                    sd.push(left); sd.push(right);
+                }
+            }//if
+        }
+        if(sd.size() != 1) return 0;
+        return sd.top();
+    }
+};
