@@ -1,0 +1,33 @@
+Total Accepted: 96633
+Total Submissions: 199315
+Difficulty: Medium
+Contributor: LeetCode
+Given an array of n integers where n > 1, nums, return an array output such that output[i] is equal to the product of all the elements of nums except nums[i].
+
+Solve it without division and in O(n).
+
+For example, given [1,2,3,4], return [24,12,8,6].
+
+Follow up:
+Could you solve it with constant space complexity? (Note: The output array does not count as extra space for the purpose of space complexity analysis.)
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Array
+Hide Similar Problems (H) Trapping Rain Water (M) Maximum Product Subarray (H) Paint House II
+
+**************************************
+
+class Solution {
+public:
+    vector<int> productExceptSelf(vector<int>& nums) {
+        ///out[i] = factorial[0..i-1] * factorial[i+1..n]
+        vector<int> output(nums.size(), 1);
+        int n = nums.size();
+        for(int mul = 1, backmul = 1, i = 0, j = n-1; i < n && j >= 0; ++i, --j){
+            output[i] *= mul; output[j] *= backmul;
+            mul *= nums[i]; backmul *= nums[j];
+        }
+        return output;
+    }
+};
