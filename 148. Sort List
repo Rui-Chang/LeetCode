@@ -1,0 +1,58 @@
+Total Accepted: 103105
+Total Submissions: 364908
+Difficulty: Medium
+Contributor: LeetCode
+Sort a linked list in O(n log n) time using constant space complexity.
+
+Subscribe to see which companies asked this question.
+
+Hide Tags Linked List Sort
+Hide Similar Problems (E) Merge Two Sorted Lists (M) Sort Colors (M) Insertion Sort List
+
+*******************
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(head == nullptr || head->next == nullptr) return head;
+        return mergesortList(head);
+    }
+    
+private:
+    ListNode *mergesortList(ListNode *head)
+    {
+        if(head->next == nullptr) return head;
+        
+        ListNode *slow = head, *fast = head;
+        while(fast->next && fast->next->next){
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        fast = slow->next;
+        slow->next = nullptr;
+        ListNode *left = mergesortList(head);
+        ListNode *right = mergesortList(fast);
+        
+        ListNode prehead(0), *pre = &prehead;
+        while(left && right){
+            if(left->val <= right->val){
+                pre->next = left;
+                pre = left; left = left->next;
+            }
+            else{
+                pre->next = right;
+                pre = right; right = right->next;
+            }
+        }
+        pre->next = (left == nullptr)? right: left;
+        return prehead.next;
+    }
+};
