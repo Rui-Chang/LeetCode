@@ -1,0 +1,61 @@
+Total Accepted: 77972
+Total Submissions: 257265
+Difficulty: Hard
+Contributor: LeetCode
+The n-queens puzzle is the problem of placing n queens on an n×n chessboard such that no two queens attack each other.
+
+
+
+Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+For example,
+There exist two distinct solutions to the 4-queens puzzle:
+
+[
+ [".Q..",  // Solution 1
+  "...Q",
+  "Q...",
+  "..Q."],
+
+ ["..Q.",  // Solution 2
+  "Q...",
+  "...Q",
+  ".Q.."]
+]
+Subscribe to see which companies asked this question.
+
+Hide Tags Backtracking
+Hide Similar Problems (H) N-Queens II
+
+********************
+
+class Solution {
+public:
+    vector<vector<string>> solveNQueens(int n) {
+        if(n < 1) return {};
+        vector<string> board(n, string(n, '.'));
+        vector<vector<string>> res;
+        //record the dangerous column, diagonal and back-diagonal.
+        vector<vector<bool>> flag = {vector<bool>(n, 1), vector<bool>(2*n - 1, 1), vector<bool>(2*n - 1, 1)};
+        solveNQueens(n, 0, board, res, flag);
+        return res;
+    }
+private:
+    void solveNQueens(int n, int i, vector<string> &board,  vector<vector<string>> &res, vector<vector<bool>> &flag){
+        if(i == n){ //N queens had been placed
+            res.push_back(board);
+            return;
+        }
+        for(int j = 0; j < n; ++j){
+            if(flag[0][j] && flag[1][i+j] && flag[2][n-1+i-j]){   //Find a position to put queen
+                board[i][j] = 'Q';  // Change chessboard state
+                flag[0][j] = flag[1][i+j] = flag[2][n-1+i-j] = 0;
+                solveNQueens(n, i+1, board, res, flag);  //Probe next row
+                flag[0][j] = flag[1][i+j] = flag[2][n-1+i-j] = 1; //Recover chessboard
+                board[i][j] = '.';
+            }
+        }
+    }
+};
